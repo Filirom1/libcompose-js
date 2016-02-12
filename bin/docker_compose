@@ -1,0 +1,9 @@
+#!/usr/bin/env node
+
+var fs = require('fs');
+var Compose = require('../lib/index');
+
+var content = fs.readFileSync('docker-compose.yml')
+var compose = Compose.new().parse(content);
+
+compose.up()

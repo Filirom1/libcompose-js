@@ -1,0 +1,28 @@
+{
+  "name": "libcompose",
+  "version": "0.0.0",
+  "description": "A Docker Compose Library in JavaScript",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Filirom1/libcompose-js.git"
+  },
+  "keywords": [
+    "docker",
+    "compose"
+  ],
+  "author": "Filirom1 <Filirom1@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Filirom1/libcompose-js/issues"
+  },
+  "dependencies": {
+    "dependency-graph": "~0.4.1",
+    "async": "~1.5.2",
+    "lodash": "~4.3.0",
+    "js-yaml": "~3.5.3"
+  }
+}
