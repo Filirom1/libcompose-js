@@ -1,0 +1,14 @@
+version: '2'
+services:
+  web:
+    image: centos:7
+    command: sleep 10000
+    depends_on:
+      - db
+      - redis
+  redis:
+    image: centos:7
+    command: sleep 10000
+  db:
+    image: centos:7
+    command: sleep 10000

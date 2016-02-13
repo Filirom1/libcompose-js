@@ -1,0 +1,128 @@
+#!/usr/bin/env node
+
+var fs = require('fs');
+var path = require('path')
+var program = require('commander');
+var debug = require('debug')('cli');
+var columnify = require('columnify')
+var _ = require('lodash')
+
+var desc = require('../package.json');
+var Compose = require('..').Compose;
+
+program
+  .version(desc.version)
+  .option('-f, --file <file>', 'Specify an alternate compose file (default: docker-compose.yml)', 'docker-compose.yml')
+  .option('-p, --project_name <name>', 'pecify an alternate project name (default: directory name)', path.basename(process.cwd()))
+  .option('--verbose', 'Show more output')
+
+program
+  .command('create [SERVICES...]')
+  .description('Create services')
+//TODO
+//  .option('--force_recreate', "Recreate containers even if their configuration and image haven't changed. Incompatible with --no-recreate.")
+//  .option('--no-recreate', "If containers already exist, don't recreate them. Incompatible with --force_recreate.")
+//  .option('--no-build', "Don't build an image, even if it's missing")
+  .action(function(services, options){
+    if(!services.length) services = null
+    compose(program).create(options, services, function(err, data){
+      if(err){
+        return error(err);
+      }
+      data = _.flatten(data);
+      _.forEach(data, function(container){
+        if(!container) return
+        console.log("Created " + container.Name)
+      });
+    });
+  });
+
+program
+  .command('ps [SERVICES...]')
+  .description('List containers')
+  .option('-q', "Only display IDs")
+  .action(function(services, options){
+    if(!services.length) services = null
+    compose(program).ps(options, services, function(err, data){
+      if(err){
+        return error(err);
+      }
+      data = _.flatten(data);
+      if(options.Q){
+        console.log(_.map(data, 'Id').join('\n'))
+        return
+      }
+      data = _.map(data, function(e){ 
+        return _.pick(e, ['Names', 'Command', 'Status', 'Ports']) 
+      })
+      console.log(columnify(data));
+    });
+  });
+
+program
+  .command('start [SERVICES...]')
+  .description('Start existing containers.')
+  .action(function(services, options){
+    if(!services.length) services = null
+    compose(program).start(options, services, function(err, data){
+      if(err){
+        return error(err);
+      }
+      data = _.flatten(data);
+      _.forEach(data, function(container){
+        if(!container) return
+        console.log("Started " + container.Names)
+      });
+    });
+  });
+
+program
+  .command('stop [SERVICES...]')
+  .description('Stop running containers without removing them.')
+  .option('-t, --timeout <TIMEOUT>', "Specify a shutdown timeout in seconds.  (default: 10)", 10)
+  .action(function(services, options){
+    if(!services.length) services = null
+    compose(program).stop(options, services, function(err, data){
+      if(err){
+        return error(err);
+      }
+      data = _.flatten(data);
+      _.forEach(data, function(container){
+        if(!container) return
+        console.log("Stopped " + container.Names)
+      });
+    });
+  });
+
+program
+  .command('up [SERVICES...]')
+  .description('Builds, (re)creates, starts, and attaches to containers for a service.')
+  .action(function(services, options){
+    if(!services.length) services = null
+    compose(program).up(options, services, function(err, data){
+      if(err){
+        return error(err);
+      }
+      data = _.flatten(data);
+      _.forEach(data, function(container){
+        if(!container) return
+        console.log("Started " + container.Names)
+      });
+    });
+  });
+
+program.parse(process.argv);
+
+function compose(options){
+  var content = fs.readFileSync(options.file);
+  var compose = new Compose({projectName: options.project_name}).parse(content);
+  return compose;
+}
+
+function error(err){
+  if(program.verbose){
+    console.error(err);
+  }else{
+    console.error(err.message);
+  }
+}
