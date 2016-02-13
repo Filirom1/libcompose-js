@@ -20,9 +20,13 @@
     "url": "https://github.com/Filirom1/libcompose-js/issues"
   },
   "dependencies": {
-    "dependency-graph": "~0.4.1",
     "async": "~1.5.2",
+    "debug": "^2.2.0",
+    "dependency-graph": "~0.4.1",
+    "dockerode": "^2.2.9",
+    "hoek": "^3.0.4",
+    "js-yaml": "~3.5.3",
     "lodash": "~4.3.0",
-    "js-yaml": "~3.5.3"
+    "object-swap-key-val": "^1.0.0"
   }
 }
