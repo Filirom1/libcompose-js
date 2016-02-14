@@ -79,6 +79,16 @@ program
   });
 
 program
+  .command('rm [SERVICES...]')
+  .description('Remove containers.')
+  .option('-f, --force', "Don't ask to confirm removal")
+  .option('-v', "Remove volumes associated with containers")
+  .action(function(services, options){
+    if(!services.length) services = null
+    compose(program).on('log', print).rm(options, services, errorHandler);
+  });
+
+program
   .command('up [SERVICES...]')
   .description('Builds, (re)creates, starts, and attaches to containers for a service.')
   .action(function(services, options){
