@@ -27,7 +27,7 @@ program
     if(!services.length) services = null
     compose(program).create(options, services, function(err, data){
       if(err){
-        return error(err);
+        return errorHandler(err);
       }
       data = _.flatten(data);
       _.forEach(data, function(container){
@@ -47,7 +47,7 @@ program
     if(!services.length) services = null
     compose(program).ps(options, services, function(err, data){
       if(err){
-        return error(err);
+        return errorHandler(err);
       }
       data = _.flatten(data);
       if(options.Q){
