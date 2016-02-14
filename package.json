@@ -21,11 +21,13 @@
   },
   "dependencies": {
     "async": "~1.5.2",
+    "breeze-dag": "~0.1.0",
     "columnify": "^1.5.4",
     "commander": "^2.9.0",
     "debug": "^2.2.0",
     "dependency-graph": "~0.4.1",
     "dockerode": "^2.2.9",
+    "gaia-tsort": "~0.1.0",
     "hoek": "^3.0.4",
     "js-yaml": "~3.5.3",
     "lodash": "~4.3.0",
