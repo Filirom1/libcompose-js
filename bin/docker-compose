@@ -62,22 +62,11 @@ program
   });
 
 program
-  .command('toto [SERVICES...]')
-  .description('Start existing containers.')
-  .action(function(services, options){
-    if(!services.length) services = null
-    var a = compose(program).dependenciesEdges(services);
-    console.log(a);
-  });
-
-program
   .command('start [SERVICES...]')
   .description('Start existing containers.')
   .action(function(services, options){
     if(!services.length) services = null
-    compose(program).start(options, services, errorHandler).on('log', function(log){
-      console.log(log);
-    });
+    compose(program).on('log', print).start(options, services, errorHandler);
   });
 
 program
@@ -86,9 +75,7 @@ program
   .option('-t, --timeout <TIMEOUT>', "Specify a shutdown timeout in seconds.  (default: 10)", 10)
   .action(function(services, options){
     if(!services.length) services = null
-    compose(program).stop(options, services, errorHandler).on('log', function(log){
-      console.log(log);
-    });
+    compose(program).on('log', print).stop(options, services, errorHandler);
   });
 
 program
@@ -96,9 +83,7 @@ program
   .description('Builds, (re)creates, starts, and attaches to containers for a service.')
   .action(function(services, options){
     if(!services.length) services = null
-    compose(program).up(options, services, errorHandler).on('log', function(log){
-      console.log(log);
-    });
+    compose(program).on('log', print).up(options, services, errorHandler);
   });
 
 program.parse(process.argv);
@@ -116,4 +101,8 @@ function errorHandler(err){
   }else{
     console.error(err.message);
   }
+}
+
+function print(log){
+  console.log(log);
 }
