@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "async": "~1.5.2",
-    "breeze-dag": "~0.1.0",
+    "async-dag": "~0.1.0",
     "columnify": "^1.5.4",
     "commander": "^2.9.0",
     "debug": "^2.2.0",
@@ -32,5 +32,8 @@
     "js-yaml": "~3.5.3",
     "lodash": "~4.3.0",
     "object-swap-key-val": "^1.0.0"
+  },
+  "devDependencies": {
+    "browserify": "^13.0.0"
   }
 }
